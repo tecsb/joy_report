@@ -86,7 +86,6 @@ def file_op():
                 cy.append(i.decode('gbk').encode('utf-8'))
             if u'天津' in i.decode('gbk').encode('utf-8'):
                 tj.append(i.decode('gbk').encode('utf-8'))
-            pass
     print type(u'中午')
 def judge_ver():
     import platform
