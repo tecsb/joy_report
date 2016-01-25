@@ -1,10 +1,27 @@
  #coding=utf-8
 import pandas as pa
 import os
-# import sys
+import sys
 # reload(sys)
 # sys.setdefaultencoding('utf8')
+#u'分析天津日报'
+def analysis_tj(ls):
+    if ls:
+        print ls
+        res = pa.read_excel(ls[-1])
+        # print res.index,res.columns
+        print res.ix[0,::]
+        ls1 = res[res.values ==u'铺位号'].columns.tolist()
+        print [i for i in ls1]
+        # print res.where(res.values ==u'铺位号')
 
+
+
+
+
+
+    else:
+        print 'empty list'
 
 #u'前10行用head',u'p=list.index(value)list为列表的value为查找的值p'
 def data_to_excel(lists):
@@ -16,8 +33,6 @@ def data_to_excel(lists):
         row = row +i.shape[0]+len(i.columns.names) + 5
     writer.save()
 
-# res = pa.read_excel('222.xlsm')
-# print res
 def create_xls():
     # res2 = pa.read_excel('cy.xlsx')
 
@@ -83,13 +98,12 @@ def file_op():
         elif isinstance(i, str):
             print 'str'
             if u'朝阳' in i.decode('gbk').encode('utf-8'):
-                cy.append(i.decode('gbk').encode('utf-8'))
+                cy.append(i)
             if u'天津' in i.decode('gbk').encode('utf-8'):
-                tj.append(i.decode('gbk').encode('utf-8'))
-    print type(u'中午')
+                tj.append(i)
+    analysis_tj(tj)
 def judge_ver():
     import platform
-    import sys
     print platform.system()
     print sys.getdefaultencoding()
     if str(platform.system()).encode('utf-8')==u'Windows':
@@ -98,8 +112,10 @@ def judge_ver():
     else:
         pass
     reload(sys)
-    sys.setdefaultencoding('utf-8')
+    sys.setdefaultencoding('utf8')
     print sys.getdefaultencoding()
+
+
 if __name__ == '__main__':
     judge_ver()
     file_op()
