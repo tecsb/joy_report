@@ -5,15 +5,22 @@ import sys
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 #u'分析天津日报'
+class axis:
+    def __init__(self, **data):
+        self.__dict__.update(data)
+            # self.name = ''     # u''
+            # self.x = 10     # 尺寸
+            # self.y = []     # 列表
 def analysis_tj(ls):
     if ls:
         print ls
         res = pa.read_excel(ls[-1])
         # print res.index,res.columns
-        print res.ix[0,::]
-        ls1 = res[res.values ==u'铺位号'].columns.tolist()
-        print [i for i in ls1]
+        # ls1 = res[res.values ==u'铺位号'].columns[0]
+        a1 = axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+        a2 = axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
         # print res.where(res.values ==u'铺位号')
+        print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
 
 
 
