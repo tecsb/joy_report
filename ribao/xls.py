@@ -16,30 +16,29 @@ def analysis_tj(ls):
         print ls
         res = pa.read_excel(ls[-1])
         print res.columns
-        # print res.index,res.columns
-        # ls1 = res[res.values ==u'铺位号'].columns[0]
-        a1 = axis()
-        a2 = axis()
-        a3 = axis()
+        a1 = 0
+        a2 = 0
+        a3 = 0
         if res[res.values ==u'铺位号'].empty:
             print res.columns.tolist().index(u'铺位号')
         else:
-            a1 = axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+            a1=axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
         if res[res.values ==u'品牌名称'].empty:
             print res.columns.tolist().index(u'品牌名称')
         else:
-            a2 = axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+            a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
         if res[res.values ==u'天气'].empty:
             print res.columns.tolist().index(u'天气')
         else:
-            a3 = axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+            a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
         res0 = pa.DataFrame(res.ix[a1.x+1:])
         if (a1.x==a2.x):
             res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
         else:
             print u'铺位和品牌名称位置不在同一行'
             return
-        print res0,res1
+        print res1.ix[::,6].sort_values().tail(10)
+        # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
 
