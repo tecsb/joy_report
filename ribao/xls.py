@@ -5,6 +5,19 @@ import sys
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 #u'分析天津日报'
+def judge_ver():
+    import platform
+    # print platform.system()
+    # print sys.getdefaultencoding()
+    if str(platform.system()).encode('utf-8')==u'Windows':
+        res = u'Windows'
+        #coding=gb2312
+    else:
+        res = u'Mac'
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+    # print sys.getdefaultencoding()
+    return res
 class axis:
     def __init__(self, **data):
         self.__dict__.update(data)
@@ -117,29 +130,24 @@ def file_op():
     sh=[]#u'上海'
     sy=[]#u'沈阳'
     for i in  ls:
-        if isinstance(i,unicode):
-            if u'朝阳' in i:
-                cy.append(i)
-            if u'天津' in i:
-                tj.append(i)
-        elif isinstance(i, str):
-            if u'朝阳' in i.decode('gbk').encode('utf-8'):
-                cy.append(i)
-            if u'天津' in i.decode('gbk').encode('utf-8'):
-                tj.append(i)
+        if str(i).find(u'朝阳')!= -1:
+            cy.append(i)
+        elif str(i).find(u'天津')!= -1:
+            tj.append(i)
+        else:
+            print 'empty directory'
+
+        # if isinstance(i,unicode) and judge_ver()==u'Mac':
+        #     if u'朝阳' in i:
+        #         cy.append(i)
+        #     if u'天津' in i:
+        #         tj.append(i)
+        # elif isinstance(i, str) and judge_ver()==u'Windows':
+        #     if u'朝阳' in i.decode('gbk').encode('utf-8'):
+        #         cy.append(i)
+        #     if u'天津' in i.decode('gbk').encode('utf-8'):
+        #         tj.append(i)
     analysis_tj(tj)
-def judge_ver():
-    import platform
-    print platform.system()
-    print sys.getdefaultencoding()
-    if str(platform.system()).encode('utf-8')==u'Windows':
-        pass
-        #coding=gb2312
-    else:
-        pass
-    reload(sys)
-    sys.setdefaultencoding('utf8')
-    print sys.getdefaultencoding()
 
 
 if __name__ == '__main__':
