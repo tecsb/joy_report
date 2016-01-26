@@ -15,12 +15,33 @@ def analysis_tj(ls):
     if ls:
         print ls
         res = pa.read_excel(ls[-1])
+        print res.columns
         # print res.index,res.columns
         # ls1 = res[res.values ==u'铺位号'].columns[0]
-        a1 = axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
-        a2 = axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+        a1 = axis()
+        a2 = axis()
+        a3 = axis()
+        if res[res.values ==u'铺位号'].empty:
+            print res.columns.tolist().index(u'铺位号')
+        else:
+            a1 = axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+        if res[res.values ==u'品牌名称'].empty:
+            print res.columns.tolist().index(u'品牌名称')
+        else:
+            a2 = axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+        if res[res.values ==u'天气'].empty:
+            print res.columns.tolist().index(u'天气')
+        else:
+            a3 = axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+        res0 = pa.DataFrame(res.ix[a1.x+1:])
+        if (a1.x==a2.x):
+            res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
+        else:
+            print u'铺位和品牌名称位置不在同一行'
+            return
+        print res0,res1
         # print res.where(res.values ==u'铺位号')
-        print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
+        # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
 
 
 
@@ -97,13 +118,11 @@ def file_op():
     sy=[]#u'沈阳'
     for i in  ls:
         if isinstance(i,unicode):
-            print 'uni'
             if u'朝阳' in i:
                 cy.append(i)
             if u'天津' in i:
                 tj.append(i)
         elif isinstance(i, str):
-            print 'str'
             if u'朝阳' in i.decode('gbk').encode('utf-8'):
                 cy.append(i)
             if u'天津' in i.decode('gbk').encode('utf-8'):
