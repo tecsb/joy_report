@@ -26,6 +26,7 @@ class axis:
             # self.y = []     # 列表
 def analysis_tj(ls):
     if ls:
+        import numpy as np
         print ls
         res = pa.read_excel(ls[-1])
         print res.columns
@@ -50,18 +51,18 @@ def analysis_tj(ls):
         else:
             print u'铺位和品牌名称位置不在同一行'
             return
-        print res1.ix[::,6].sort_values().tail(10)
+        for i in res1.ix[::,6].sort_values(ascending=False).dropna():
+            if isinstance(i,(float,int)):
+                sales_total = i;
+                break
+            else:
+                pass
+        print sales_total
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
-
-
-
-
-
-
     else:
-        print 'empty list'
+        print 'no tianjin file in the directory'
 
 #u'前10行用head',u'p=list.index(value)list为列表的value为查找的值p'
 def data_to_excel(lists):
@@ -128,13 +129,18 @@ def file_op():
     xy=[]#u'祥云'
     sh=[]#u'上海'
     sy=[]#u'沈阳'
-    for i in  ls:
-        if str(i).find(u'朝阳')!= -1:
-            cy.append(i)
-        elif str(i).find(u'天津')!= -1:
-            tj.append(i)
-        else:
-            print 'empty directory'
+    if  judge_ver()==u'Windows':
+        for i in  ls:
+            if str(i).decode('gb2312').find(u'朝阳')!= -1:
+                cy.append(i)
+            elif str(i).decode('gb2312').find(u'天津')!= -1:
+                tj.append(i)
+    else:
+        for i in  ls:
+            if str(i).find(u'朝阳')!= -1:
+                cy.append(i)
+            elif str(i).find(u'天津')!= -1:
+                tj.append(i)
 
         # if isinstance(i,unicode) and judge_ver()==u'Mac':
         #     if u'朝阳' in i:
