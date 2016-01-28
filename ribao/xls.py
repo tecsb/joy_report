@@ -24,6 +24,8 @@ class axis:
             # self.name = ''     # u''
             # self.x = 10     # 尺寸
             # self.y = []     # 列表
+
+
 def analysis_tj(ls):
     if ls:
         import numpy as np
@@ -51,6 +53,7 @@ def analysis_tj(ls):
         else:
             print u'铺位和品牌名称位置不在同一行'
             return
+        sales_total =0
         for i in res1.ix[::,6].sort_values(ascending=False).dropna():
             if isinstance(i,(float,int)):
                 sales_total = i;
@@ -58,6 +61,15 @@ def analysis_tj(ls):
             else:
                 pass
         print sales_total
+        if a3==0:
+            for i in res.columns.tolist():
+                if isinstance(i,(int,float)):
+                    print type(i),i
+                elif  isinstance(i,str):
+                    print type(i),i
+                else:
+                    print type(i),i
+        return {'sale':sales_total}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
