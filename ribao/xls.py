@@ -2,6 +2,7 @@
 import pandas as pa
 import os
 import sys
+import re
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 #u'分析天津日报'
@@ -27,8 +28,8 @@ class axis:
 
 
 def analysis_tj(ls):
+    print 'tj report'
     if ls:
-        import numpy as np
         res = pa.read_excel(ls[-1])
         a1 = 0
         a2 = 0
@@ -41,10 +42,10 @@ def analysis_tj(ls):
             print res.columns.tolist().index(u'品牌名称')
         else:
             a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
-        if res[res.values ==u'天气'].empty:
-            print res.columns.tolist().index(u'天气')
-        else:
-            a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+        # if res[res.values ==u'天气'].empty:
+        #     print res.columns.tolist().index(u'天气')
+        # else:
+        #     a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
         res0 = pa.DataFrame(res.ix[a1.x+1:])
         if (a1.x==a2.x):
             res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
@@ -56,34 +57,45 @@ def analysis_tj(ls):
         today_people = 0
         for i in res1.ix[::,6].sort_values(ascending=False).dropna():
             if isinstance(i,(float,int)):
-                sales_total = i;
+                sales_total = i
                 break
             else:
                 pass
-        print sales_total
-        if a3==0:
-            tp = res.columns.tolist()
-            for i in tp:
-                if isinstance(i,(int,float)):
-                    pass
-                elif  isinstance(i,unicode):
-                    if u'车流' in i:
-                        today_cars=tp[tp.index(i)+1]
-                    elif u'客流'in i:
-                        today_people = tp[tp.index(i)+1]
-                else:
-                    pass
-        else:
-            print 'weather location errors'
-        print {'sale':sales_total,'cars':today_cars,'people':today_people}
+        # if a3==0:
+        #     tp = res.columns.tolist()
+        #     for i in tp:
+        #         if isinstance(i,(int,float)):
+        #             pass
+        #         elif  isinstance(i,unicode):
+        #             if u'车流' in i:
+        #                 today_cars=tp[tp.index(i)+1]
+        #             elif u'客流'in i:
+        #                 today_people = tp[tp.index(i)+1]
+        #         else:
+        #             pass
+        # else:
+        #     print 'weather location errors'
+        # print {'sale':sales_total,'cars':today_cars,'people':today_people}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
+        if a3==0:
+            tp = res.columns.tolist()
+            ls1 = []
+            for i in tp:
+                if isinstance(i,(int,float)):
+                    ls1.append(i)
+        else:
+            print 'weather location errors'
+        if(len(ls1)<2):
+            print 'error:locate people and cars'
+            return
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
     else:
         print 'no tianjin file in the directory'
 def analysis_cy(ls):
+    print 'cy report'
     if ls:
-        import numpy as np
         res = pa.read_excel(ls[-1])
         a1 = 0
         a2 = 0
@@ -115,16 +127,67 @@ def analysis_cy(ls):
                 break
             else:
                 pass
-        print sales_total
         if a3==0:
             tp = res.columns.tolist()
+            ls1 = []
             for i in tp:
+                if isinstance(i,(int,float)):
+                    ls1.append(i)
+        else:
+            print 'weather location errors'
+        if(len(ls1)<2):
+            print 'error:locate people and cars'
+            return
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
+        # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
+        # print res.where(res.values ==u'铺位号')
+        # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
+    else:
+        print 'no chaoyang file in the directory'
+def analysis_xd(ls):
+    if ls:
+        res = pa.read_excel(ls[-1])
+        a1 = 0
+        a2 = 0
+        a3 = 0 #fault
+        if res[res.values ==u'铺位号'].empty:
+            print res.columns.tolist().index(u'铺位号')
+        else:
+            a1=axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+        if res[res.values ==u'品牌名称'].empty:
+            print res.columns.tolist().index(u'品牌名称')
+        else:
+            a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+        # if res[res.values ==u'天气'].empty:
+        #     print res.columns.tolist().index(u'天气')
+        # else:
+        #     a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+        res0 = pa.DataFrame(res.ix[a1.x+1:])
+        if (a1.x==a2.x):
+            res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
+        else:
+            print u'铺位和品牌名称位置不在同一行'
+            return
+        sales_total =0
+        today_cars=0
+        today_people = 0
+        for i in res1.ix[::,6].sort_values(ascending=False).dropna():
+            if isinstance(i,(float,int)):
+                sales_total = i
+                break
+            else:
+                pass
+        if a3==0:
+            tp = res.columns.tolist()
+            print tp
+            for i in tp:
+                print type(i),i
                 if isinstance(i,(int,float)):
                     pass
                 elif  isinstance(i,unicode):
-                    if u'车流' in i:
+                    if str(i).find(u'车流'):
                         today_cars=tp[tp.index(i)+1]
-                    elif u'客流'in i:
+                    elif str(i).find(u'客流'):
                         today_people = tp[tp.index(i)+1]
                 else:
                     pass
@@ -135,7 +198,7 @@ def analysis_cy(ls):
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
     else:
-        print 'no chaoyang file in the directory'
+        print 'no xidan file in the directory'
 #u'前10行用head',u'p=list.index(value)list为列表的value为查找的值p'
 def data_to_excel(lists):
     writer = pa.ExcelWriter('test.xlsx',engine='xlsxwriter')   # Creating Excel Writer Object from Pandas
@@ -207,12 +270,17 @@ def file_op():
                 cy.append(i)
             elif str(i).decode('gb2312').find(u'天津')!= -1:
                 tj.append(i)
+            elif str(i).decode('gb2312').find(u'西单')!= -1:
+                xd.append(i)
     else:
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
                 cy.append(i)
             elif str(i).find(u'天津')!= -1:
                 tj.append(i)
+            elif str(i).find(u'西单')!= -1:
+                xd.append(i)
+
 
         # if isinstance(i,unicode) and judge_ver()==u'Mac':
         #     if u'朝阳' in i:
@@ -224,8 +292,9 @@ def file_op():
         #         cy.append(i)
         #     if u'天津' in i.decode('gbk').encode('utf-8'):
         #         tj.append(i)
-    analysis_tj(tj)
-    analysis_cy(cy)
+    # analysis_tj(tj)
+    # analysis_cy(cy)
+    analysis_xd(xd)
 
 
 if __name__ == '__main__':
