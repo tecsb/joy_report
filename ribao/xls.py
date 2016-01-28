@@ -76,6 +76,7 @@ def analysis_tj(ls):
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
     else:
         print 'no tianjin file in the directory'
+        print ''
 
 #u'前10行用head',u'p=list.index(value)list为列表的value为查找的值p'
 def data_to_excel(lists):
