@@ -70,6 +70,7 @@ def analysis_tj(ls):
                 else:
                     print type(i),i
         return {'sale':sales_total}
+
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
