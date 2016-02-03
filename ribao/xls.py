@@ -264,6 +264,76 @@ def analysis_sh(ls):
     else:
         print 'no shanghai file in the directory'
 #u'前10行用head',u'p=list.index(value)list为列表的value为查找的值p'
+def analysis_sy(ls):
+    if ls:
+        res = pa.read_excel(ls[-1])
+        a1 = 0
+        a2 = 0
+        a3 = 0 #fault
+        if res[res.values ==u'铺位号'].empty:
+            print res.columns.tolist().index(u'铺位号')
+        else:
+            a1=axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+        if res[res.values ==u'品牌名称'].empty:
+            print res.columns.tolist().index(u'品牌名称')
+        else:
+            a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+        # if res[res.values ==u'天气'].empty:
+        #     print res.columns.tolist().index(u'天气')
+        # else:
+        #     a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+        if (a1.x==a2.x):
+            res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
+        else:
+            print u'铺位和品牌名称位置不在同一行'
+            return
+        sales_total =0
+        today_cars=0
+        today_people = 0
+        for i in res1.ix[::,6].sort_values(ascending=False).dropna():
+            if isinstance(i,(float,int)):
+                sales_total = i
+                break
+            else:
+                pass
+        if a3==0:
+            tp = res.columns.tolist()
+            print tp
+            for i in tp:
+                print type(i),i
+                if isinstance(i,(int,float)):
+                    pass
+                elif  isinstance(i,unicode):
+                    if str(i).find(u'车流')>0:
+                        next = tp[tp.index(i)+1]
+                        if isinstance(next,(int,float)):
+                            today_cars = next
+                        else:
+                            tab1 = re.findall('\w*\d+\w*',next)
+                            if len(tab1)==1:
+                                today_cars = tab1[0]
+                            elif len(tab1)>1:
+                                today_cars = float(tab1[-1])+(float(tab1[-2])*1000)
+                    elif str(i).find(u'客流')>0:
+                        next =tp[tp.index(i)+1]
+                        if isinstance(next,(int,float)):
+                            today_people = next
+                        else:
+                            tab1 = re.findall('\w*\d+\w*',i)
+                            if len(tab1)==1:
+                                today_cars = tab1[0]
+                            elif len(tab1)>1:
+                                today_cars = float(tab1[-1])+(float(tab1[-2])*1000)
+                else:
+                    pass
+        else:
+            print 'weather location errors'
+        print {'sale':sales_total,'cars':today_cars,'people':today_people}
+        # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
+        # print res.where(res.values ==u'铺位号')
+        # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
+    else:
+        print 'no shenyang file in the directory'
 def data_to_excel(lists):
     writer = pa.ExcelWriter('test.xlsx',engine='xlsxwriter')   # Creating Excel Writer Object from Pandas
     # workbook=writer.book
@@ -338,6 +408,8 @@ def file_op():
                 xd.append(i)
             elif str(i).decode('gb2312').find(u'上海')!= -1:
                 sh.append(i)
+            elif str(i).decode('gb2312').find(u'沈阳')!= -1:
+                sy.append(i)
     else:
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
@@ -348,6 +420,8 @@ def file_op():
                 xd.append(i)
             elif str(i).find(u'上海')!= -1:
                 sh.append(i)
+            elif str(i).find(u'沈阳')!= -1:
+                sy.append(i)
 
         # if isinstance(i,unicode) and judge_ver()==u'Mac':
         #     if u'朝阳' in i:
@@ -362,7 +436,9 @@ def file_op():
     # analysis_tj(tj)
     # analysis_cy(cy)
     # analysis_xd(xd)
-    analysis_sh(sh)
+    # analysis_sh(sh)
+    analysis_sy(sy)
+
 
 
 if __name__ == '__main__':
