@@ -237,7 +237,6 @@ def analysis_sh(ls):
         else:
             print u'铺位和品牌名称位置不在同一行'
             return
-        print res1
         sales_total =0
         today_cars=0
         today_people = 0
@@ -247,38 +246,18 @@ def analysis_sh(ls):
                 break
             else:
                 pass
-        p = re.compile(u'^(\d*)')
         if a3==0:
-            tp = res.columns.tolist()
-            print tp
+            tp = res.ix[0,::].tolist()
+            ls1 = []
             for i in tp:
-                print type(i),i
                 if isinstance(i,(int,float)):
-                    pass
-                elif  isinstance(i,unicode):
-                    if str(i).find(u'车流')>0:
-                        tab1 = re.findall('\w*\d+\w*',i)
-                        tab2 = re.findall('\w*\d+\.\d+\w*',i)
-                        if len(tab2)==0:
-                            today_cars=int(tab1[0])
-                        else:
-                            today_cars=float(tab2[0])
-                        # today_cars=tp[tp.index(i)+1]
-                    elif str(i).find(u'客流')>0:
-                        tab1 = re.findall('\w*\d+\w*',i)
-                        print tab1
-                        tab2 = re.findall('\w*\d+\.\d+\w*',i)
-                        print tab2
-                        if len(tab2)==0:
-                            today_people=int(tab1[0])
-                        else:
-                            today_people=float(tab2[0])
-                        # today_people = tp[tp.index(i)+1]
-                else:
-                    pass
+                    ls1.append(i)
         else:
             print 'weather location errors'
-        print {'sale':sales_total,'cars':today_cars,'people':today_people}
+        if(len(ls1)<2):
+            print 'error:locate people and cars'
+            return
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
