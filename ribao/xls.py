@@ -208,6 +208,7 @@ def analysis_xd(ls):
         else:
             print 'weather location errors'
         print {'sale':sales_total,'cars':today_cars,'people':today_people}
+        return {'sale':sales_total,'cars':today_cars,'people':today_people}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -448,8 +449,9 @@ def file_op():
     print os.getcwd()
     # print os.path.isabs(os.getcwd())
     ls = os.listdir(os.getcwd())
-    ls_dir = []
-    ls_date = []
+    ls_dir = [] # type:str all dirs included in the current dir
+    ls_dir_used= [] # type:str dir used wo choose 13 totaly
+    ls_date = [] # type:datetime
     for i in ls:
         if os.path.isdir(i):
             ls_dir.append(i)
@@ -463,8 +465,14 @@ def file_op():
                 print u'文件夹的日期格式有误'
     ls_date = sorted(ls_date)
     try:
-        print ls_date[-13:-1]
-        ls_dir[i.strftime('%m.%d') for i in ls_date]
+        str_date_index = [i.strftime('%m.%d') for i in ls_date[-13:]]
+        for i in str_date_index:
+            tmp =re.findall('[1-9]+[0-9]*\.[1-9]+[0-9]*',i)
+            if len(tmp)>0:
+                ls_dir_used.append(tmp[0])
+            else:
+                pat = re.compile('0')
+                ls_dir_used.append(pat.sub('',i))
     except:
         print u'取值超出索引序列，文件夹数量不足'
     cy=[]#u'朝阳'
@@ -503,7 +511,15 @@ def file_op():
                 sy.append(i)
             elif str(i).find(u'烟台')!= -1:
                 yt.append(i)
+    index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
+    cols1 = ls_dir_used
+    cols2= ['sale','cars','people']
 
+    multi = pa.MultiIndex.from_product([cols1,cols2], names=['first', 'second'])
+    tab_basic = pa.DataFrame(index=index,columns=multi)
+    tab_basic = tab_basic.fillna(0)
+    tab_basic.set_value(u'西单','1.1',analysis_xd(ls).values())
+    '''= analysis_xd(xd)['cars']'''
         # if isinstance(i,unicode) and judge_ver()==u'Mac':
         #     if u'朝阳' in i:
         #         cy.append(i)
@@ -520,6 +536,10 @@ def file_op():
     # analysis_sh(sh)
     # analysis_sy(sy)
     # analysis_yt(yt)
+def create_basic_tab(t1,t2):
+    tab_basic = pa.DataFrame(index=t1,columns=t2)
+    tab_basic = tab_basic.fillna(0)
+    print tab_basic
 
 
 
