@@ -519,7 +519,7 @@ def file_op():
     tab_basic = pa.DataFrame(index=index,columns=multi)
     tab_basic = tab_basic.fillna(0)
     tab_basic.set_value(u'西单','1.1',analysis_xd(ls).values())
-    '''= analysis_xd(xd)['cars']'''
+
         # if isinstance(i,unicode) and judge_ver()==u'Mac':
         #     if u'朝阳' in i:
         #         cy.append(i)
@@ -540,6 +540,10 @@ def create_basic_tab(t1,t2):
     tab_basic = pa.DataFrame(index=t1,columns=t2)
     tab_basic = tab_basic.fillna(0)
     print tab_basic
+def handle_oneday(basic_tab,dir):
+    pass
+
+
 
 
 
