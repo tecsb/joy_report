@@ -415,21 +415,24 @@ def create_xls(tab_basic,ls_dir_used):
     multi = [ls1,ls2]
     index1 = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都',u'各项目合计']
     tab0 = pa.DataFrame(index= index1,columns= multi)
-    print tab0.shape
     tab0= tab0.fillna(0)
-
     tab1 = pa.DataFrame(index = index1,columns=[u'昨日销售',u'今日销售',u'增幅'])
+    tab1.set_value(index=tab1.index,col=u'今日销售',value=tab_basic[ls_dir_used[-1]].sale)
+    tab1.set_value(index=tab1.index,col=u'昨日销售',value=tab_basic[ls_dir_used[-2]].sale)
     tab1 = tab1.fillna(0)
 
     tab2 = pa.DataFrame(index = index1,columns=[u'昨日客流',u'今日客流',u'增幅'])
-    tab2 = tab1.fillna(0)
+    tab2.set_value(index=tab2.index,col=u'今日客流',value=tab_basic[ls_dir_used[-1]].people)
+    tab2.set_value(index=tab2.index,col=u'昨日客流',value=tab_basic[ls_dir_used[-2]].people)
+    tab2 = tab2.fillna(0)
 
     # u'13日各项目销售额'
-    tab3 = pa.DataFrame(index = index1,columns=ls_dir_used)
+    tab3 = pa.DataFrame(data=tab_basic.xs('sale',level='second',axis=1),index = index1,columns=ls_dir_used)
     tab3 = tab3.fillna(0)
     # u'13日各项目客流'
-    tab4 = pa.DataFrame(index = index1,columns=ls_dir_used)
+    tab4 = pa.DataFrame(data=tab_basic.xs('people',level='second',axis=1),index = index1,columns=ls_dir_used)
     tab4 = tab4.fillna(0)
+
     #u'项目客群指标列表'
     ls3 = [u'提袋率',u'提袋率',u'提袋率',u'客单价',u'客单价',u'客单价',u'车/客流占比',u'车/客流占比',u'车/客流占比',u'车位转换率',u'车位转换率',u'车位转换率']
     ls4 = [u'当日',u'上周同日',u'增幅',u'当日',u'上周同日',u'增幅',u'车流量',u'客流量',u'车/客流占比',u'车流量',u'车位数',u'车位转换率']
@@ -490,17 +493,29 @@ def handle_oneday(tab_basic,dir):
                 yt.append(i)
     for i in tab_basic.index.values:
         if i ==u'西单':
-            tab_basic.set_value(i,dir,analysis_xd(xd).values())
+            r1=analysis_xd(xd)
+            var=[r1['sale'],r1['cars'],r1['people']]
+            tab_basic.set_value(i,dir,var)
         elif i ==u'朝阳':
-            tab_basic.set_value(i,dir,analysis_cy(cy).values())
+            r1=analysis_cy(cy)
+            var=[r1['sale'],r1['cars'],r1['people']]
+            tab_basic.set_value(i,dir,var)
         elif i ==u'沈阳':
-            tab_basic.set_value(i,dir,analysis_sy(sy).values())
+            r1=analysis_sy(sy)
+            var=[r1['sale'],r1['cars'],r1['people']]
+            tab_basic.set_value(i,dir,var)
         elif i ==u'上海':
-            tab_basic.set_value(i,dir,analysis_sh(sh).values())
+            r1=analysis_sh(sh)
+            var=[r1['sale'],r1['cars'],r1['people']]
+            tab_basic.set_value(i,dir,var)
         elif i ==u'天津':
-            tab_basic.set_value(i,dir,analysis_tj(tj).values())
+            r1=analysis_tj(tj)
+            var=[r1['sale'],r1['cars'],r1['people']]
+            tab_basic.set_value(i,dir,var)
         elif i ==u'烟台':
-            tab_basic.set_value(i,dir,analysis_yt(yt).values())
+            r1=analysis_yt(yt)
+            var=[r1['sale'],r1['cars'],r1['people']]
+            tab_basic.set_value(i,dir,var)
 
 
 
@@ -541,12 +556,16 @@ def create_tab_basic():
     multi = pa.MultiIndex.from_product([cols1,cols2], names=['first', 'second'])
     tab_basic = pa.DataFrame(index=index,columns=multi)
     tab_basic = tab_basic.fillna(0)
+    '''________________________________'''
     handle_oneday(tab_basic,'1.1')
+    print tab_basic
+    # print tab_basic.xs('sale',level='second',axis=1)
     return  tab_basic,ls_dir_used
 
 if __name__ == '__main__':
     judge_ver()
     tab_basic,ls_dir_used =create_tab_basic()
-    # create_xls(tab_basic,ls_dir_used)
+    create_xls(tab_basic,ls_dir_used)
+
 
 
