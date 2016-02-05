@@ -93,6 +93,7 @@ def analysis_tj(ls):
             print 'error:locate people and cars'
             return
         print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
+        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
     else:
         print 'no tianjin file in the directory'
 def analysis_cy(ls):
@@ -141,6 +142,7 @@ def analysis_cy(ls):
             print 'error:locate people and cars'
             return
         print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
+        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -259,6 +261,7 @@ def analysis_sh(ls):
             print 'error:locate people and cars'
             return
         print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
+        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -329,6 +332,7 @@ def analysis_sy(ls):
         else:
             print 'weather location errors'
         print {'sale':sales_total,'cars':today_cars,'people':today_people}
+        return {'sale':sales_total,'cars':today_cars,'people':today_people}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -380,6 +384,7 @@ def analysis_yt(ls):
             print 'error:locate people and cars'
             return
         print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
+        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1]}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -394,7 +399,7 @@ def data_to_excel(lists):
         row = row +i.shape[0]+len(i.columns.names) + 5
     writer.save()
 
-def create_xls():
+def create_xls(tab_basic,ls_dir_used):
     # res2 = pa.read_excel('cy.xlsx')
 
     title1 = pa.DataFrame(data=[u'朝阳前十'],index=range(1))
@@ -420,10 +425,10 @@ def create_xls():
     tab2 = tab1.fillna(0)
 
     # u'13日各项目销售额'
-    tab3 = pa.DataFrame(index = index1,columns=range(13))
+    tab3 = pa.DataFrame(index = index1,columns=ls_dir_used)
     tab3 = tab3.fillna(0)
     # u'13日各项目客流'
-    tab4 = pa.DataFrame(index = index1,columns=range(13))
+    tab4 = pa.DataFrame(index = index1,columns=ls_dir_used)
     tab4 = tab4.fillna(0)
     #u'项目客群指标列表'
     ls3 = [u'提袋率',u'提袋率',u'提袋率',u'客单价',u'客单价',u'客单价',u'车/客流占比',u'车/客流占比',u'车/客流占比',u'车位转换率',u'车位转换率',u'车位转换率']
@@ -444,37 +449,9 @@ def create_xls():
     # tab2 = pa.DataFrame(index = range(1,11),columns=[u'铺位号',u'品牌',u'面积',u'业态',u'当日销售',u'交易笔数',u'客单价',u'上周同日销售',u'销售增幅',u'日坪效',u'备注'])
     # tab2 = tab2.fillna(0)
     # u'13日各项目销售额'
-    data_to_excel([tab0,tab1,tab2,tab3,tab4,tab5,tab6,tab7])
-def file_op():
-    print os.getcwd()
-    # print os.path.isabs(os.getcwd())
-    ls = os.listdir(os.getcwd())
-    ls_dir = [] # type:str all dirs included in the current dir
-    ls_dir_used= [] # type:str dir used wo choose 13 totaly
-    ls_date = [] # type:datetime
-    for i in ls:
-        if os.path.isdir(i):
-            ls_dir.append(i)
-            if len(re.findall('\w*\d+.\d+\w*',i))>0:
-                tmp = datetime.strptime(i,'%m.%d')
-                if tmp.month==1:
-                    ls_date.append(datetime(tmp.year+1,tmp.month,tmp.day))
-                else:
-                    ls_date.append(tmp)
-            else:
-                print u'文件夹的日期格式有误'
-    ls_date = sorted(ls_date)
-    try:
-        str_date_index = [i.strftime('%m.%d') for i in ls_date[-13:]]
-        for i in str_date_index:
-            tmp =re.findall('[1-9]+[0-9]*\.[1-9]+[0-9]*',i)
-            if len(tmp)>0:
-                ls_dir_used.append(tmp[0])
-            else:
-                pat = re.compile('0')
-                ls_dir_used.append(pat.sub('',i))
-    except:
-        print u'取值超出索引序列，文件夹数量不足'
+    #data_to_excel([tab0,tab1,tab2,tab3,tab4,tab5,tab6,tab7])
+def handle_oneday(tab_basic,dir):
+    ls = os.listdir(os.getcwd()+'\\'+dir)
     cy=[]#u'朝阳'
     tj=[]#u'天津'
     xd=[]#u'西单'
@@ -482,7 +459,7 @@ def file_op():
     yt=[]#u'烟台'
     xy=[]#u'祥云'
     sh=[]#u'上海'
-    sy=[]#u'沈阳'
+    sy=[]#u'沈阳
     if  judge_ver()==u'Windows':
         for i in  ls:
             if str(i).decode('gb2312').find(u'朝阳')!= -1:
@@ -511,6 +488,52 @@ def file_op():
                 sy.append(i)
             elif str(i).find(u'烟台')!= -1:
                 yt.append(i)
+    for i in tab_basic.index.values:
+        if i ==u'西单':
+            tab_basic.set_value(i,dir,analysis_xd(xd).values())
+        elif i ==u'朝阳':
+            tab_basic.set_value(i,dir,analysis_cy(cy).values())
+        elif i ==u'沈阳':
+            tab_basic.set_value(i,dir,analysis_sy(sy).values())
+        elif i ==u'上海':
+            tab_basic.set_value(i,dir,analysis_sh(sh).values())
+        elif i ==u'天津':
+            tab_basic.set_value(i,dir,analysis_tj(tj).values())
+        elif i ==u'烟台':
+            tab_basic.set_value(i,dir,analysis_yt(yt).values())
+
+
+
+def create_tab_basic():
+    print os.getcwd()
+    # print os.path.isabs(os.getcwd())
+    ls = os.listdir(os.getcwd())
+    ls_dir = [] # type:str all dirs included in the current dir
+    ls_dir_used= [] # type:str dir used wo choose 13 totally recently
+    ls_date = [] # type:datetime
+    for i in ls:
+        if os.path.isdir(i):
+            ls_dir.append(i)
+            if len(re.findall('\w*\d+.\d+\w*',i))>0:
+                tmp = datetime.strptime(i,'%m.%d')
+                if tmp.month==1:
+                    ls_date.append(datetime(tmp.year+1,tmp.month,tmp.day))
+                else:
+                    ls_date.append(tmp)
+            else:
+                print u'文件夹的日期格式有误'
+    ls_date = sorted(ls_date)
+    try:
+        str_date_index = [i.strftime('%m.%d') for i in ls_date[-13:]]
+        for i in str_date_index:
+            tmp =re.findall('[1-9]+[0-9]*\.[1-9]+[0-9]*',i)
+            if len(tmp)>0:
+                ls_dir_used.append(tmp[0])
+            else:
+                pat = re.compile('0')
+                ls_dir_used.append(pat.sub('',i))
+    except:
+        print u'取值超出索引序列，文件夹数量不足'
     index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
     cols1 = ls_dir_used
     cols2= ['sale','cars','people']
@@ -518,36 +541,12 @@ def file_op():
     multi = pa.MultiIndex.from_product([cols1,cols2], names=['first', 'second'])
     tab_basic = pa.DataFrame(index=index,columns=multi)
     tab_basic = tab_basic.fillna(0)
-    tab_basic.set_value(u'西单','1.1',analysis_xd(ls).values())
-
-        # if isinstance(i,unicode) and judge_ver()==u'Mac':
-        #     if u'朝阳' in i:
-        #         cy.append(i)
-        #     if u'天津' in i:
-        #         tj.append(i)
-        # elif isinstance(i, str) and judge_ver()==u'Windows':
-        #     if u'朝阳' in i.decode('gbk').encode('utf-8'):
-        #         cy.append(i)
-        #     if u'天津' in i.decode('gbk').encode('utf-8'):
-        #         tj.append(i)
-    # analysis_tj(tj)
-    # analysis_cy(cy)
-    # analysis_xd(xd)
-    # analysis_sh(sh)
-    # analysis_sy(sy)
-    # analysis_yt(yt)
-def create_basic_tab(t1,t2):
-    tab_basic = pa.DataFrame(index=t1,columns=t2)
-    tab_basic = tab_basic.fillna(0)
-    print tab_basic
-def handle_oneday(basic_tab,dir):
-    pass
-
-
-
-
+    handle_oneday(tab_basic,'1.1')
+    return  tab_basic,ls_dir_used
 
 if __name__ == '__main__':
     judge_ver()
-    file_op()
-    # create_xls()
+    tab_basic,ls_dir_used =create_tab_basic()
+    # create_xls(tab_basic,ls_dir_used)
+
+
