@@ -415,8 +415,16 @@ def create_xls(tab_basic,ls_dir_used):
     multi = [ls1,ls2]
     index1 = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都',u'各项目合计']
     tab0 = pa.DataFrame(index= index1,columns= multi)
+    tab0.set_value(index = tab_basic.index,col=(u'销售额(万元)',u'当日销售'),value=tab_basic[ls_dir_used[-1]].sale)
+    tab0.set_value(index = tab_basic.index,col=(u'销售额(万元)',u'上周同日'),value=tab_basic[ls_dir_used[-7]].sale)
+    # tab0.set_value(index = tab_basic.index,col=(u'销售额(万元)',u'增幅'),value=tab_basic[ls_dir_used[-7]].sale)
+    tab0.set_value(index = tab_basic.index,col=(u'客流量(万人)',u'当日客流'),value=tab_basic[ls_dir_used[-1]].people)
+    tab0.set_value(index = tab_basic.index,col=(u'客流量(万人)',u'上周同日'),value=tab_basic[ls_dir_used[-7]].people)
+    tab0.set_value(index = tab_basic.index,col=(u'车流量(车次)',u'当日车流'),value=tab_basic[ls_dir_used[-1]].sale)
+    tab0.set_value(index = tab_basic.index,col=(u'车流量(车次)',u'上周同日'),value=tab_basic[ls_dir_used[-7]].people)
     tab0= tab0.fillna(0)
     tab1 = pa.DataFrame(index = index1,columns=[u'昨日销售',u'今日销售',u'增幅'])
+    # print '************','\n',tab_basic.ix[:,ls_dir_used[-1]]['sale']
     tab1.set_value(index=tab1.index,col=u'今日销售',value=tab_basic[ls_dir_used[-1]].sale)
     tab1.set_value(index=tab1.index,col=u'昨日销售',value=tab_basic[ls_dir_used[-2]].sale)
     tab1 = tab1.fillna(0)
@@ -447,14 +455,14 @@ def create_xls(tab_basic,ls_dir_used):
     # u'上周同日各项目分业态销售状况(万元)'
     tab7 = pa.DataFrame(index = index1,columns=cols)
     tab7 = tab7.fillna(0)
-    print tab0,'\r',tab1,'\r',tab2,'\r',tab3,'\r',tab4,'\r',tab5,'\r',tab6,'\r',tab7
+    # print tab0,'\r',tab1,'\r',tab2,'\r',tab3,'\r',tab4,'\r',tab5,'\r',tab6,'\r',tab7
     # u'top 10 各项目'
     # tab2 = pa.DataFrame(index = range(1,11),columns=[u'铺位号',u'品牌',u'面积',u'业态',u'当日销售',u'交易笔数',u'客单价',u'上周同日销售',u'销售增幅',u'日坪效',u'备注'])
     # tab2 = tab2.fillna(0)
     # u'13日各项目销售额'
-    #data_to_excel([tab0,tab1,tab2,tab3,tab4,tab5,tab6,tab7])
+    return [tab0,tab1,tab2,tab3,tab4,tab5,tab6,tab7]
 def handle_oneday(tab_basic,dir):
-    ls = os.listdir(os.getcwd()+'\\'+dir)
+    ls = os.listdir(os.getcwd()+'/'+dir)
     cy=[]#u'朝阳'
     tj=[]#u'天津'
     xd=[]#u'西单'
@@ -491,6 +499,9 @@ def handle_oneday(tab_basic,dir):
                 sy.append(i)
             elif str(i).find(u'烟台')!= -1:
                 yt.append(i)
+    if len(cy)==0 or len(xd)==0 or len(tj)==0 or len(sh)==0 or len(sy)==0:
+        print 'lost file ______ handleoneday()',dir,'\n'
+        return
     for i in tab_basic.index.values:
         if i ==u'西单':
             r1=analysis_xd(xd)
@@ -517,8 +528,71 @@ def handle_oneday(tab_basic,dir):
             var=[r1['sale'],r1['cars'],r1['people']]
             tab_basic.set_value(i,dir,var)
 
-
-
+def handle_oneday_group(tab_group,dir):
+    ls = os.listdir(os.getcwd()+'/'+dir)
+    cy=[]#u'朝阳'
+    tj=[]#u'天津'
+    xd=[]#u'西单'
+    cd=[]#u'成都'
+    yt=[]#u'烟台'
+    xy=[]#u'祥云'
+    sh=[]#u'上海'
+    sy=[]#u'沈阳
+    if  judge_ver()==u'Windows':
+        for i in  ls:
+            if str(i).decode('gb2312').find(u'朝阳')!= -1:
+                cy.append(i)
+            elif str(i).decode('gb2312').find(u'天津')!= -1:
+                tj.append(i)
+            elif str(i).decode('gb2312').find(u'西单')!= -1:
+                xd.append(i)
+            elif str(i).decode('gb2312').find(u'上海')!= -1:
+                sh.append(i)
+            elif str(i).decode('gb2312').find(u'沈阳')!= -1:
+                sy.append(i)
+            elif str(i).decode('gb2312').find(u'烟台')!= -1:
+                yt.append(i)
+    else:
+        for i in  ls:
+            if str(i).find(u'朝阳')!= -1:
+                cy.append(i)
+            elif str(i).find(u'天津')!= -1:
+                tj.append(i)
+            elif str(i).find(u'西单')!= -1:
+                xd.append(i)
+            elif str(i).find(u'上海')!= -1:
+                sh.append(i)
+            elif str(i).find(u'沈阳')!= -1:
+                sy.append(i)
+            elif str(i).find(u'烟台')!= -1:
+                yt.append(i)
+    if len(cy)==0 or len(xd)==0 or len(tj)==0 or len(sh)==0 or len(sy)==0:
+        print 'lost file ______ handleoneday()',dir,'\n'
+        return
+    for i in tab_group.index.values:
+        if i ==u'西单':
+            r1=analysis_xd(xd)
+        # elif i ==u'朝阳':
+        #     r1=analysis_cy(cy)
+        #     var=[r1['sale'],r1['cars'],r1['people']]
+        #     tab_basic.set_value(i,dir,var)
+        # elif i ==u'沈阳':
+        #     r1=analysis_sy(sy)
+        #     var=[r1['sale'],r1['cars'],r1['people']]
+        #     tab_basic.set_value(i,dir,var)
+        # elif i ==u'上海':
+        #     r1=analysis_sh(sh)
+        #     var=[r1['sale'],r1['cars'],r1['people']]
+        #     tab_basic.set_value(i,dir,var)
+        # elif i ==u'天津':
+        #     r1=analysis_tj(tj)
+        #     var=[r1['sale'],r1['cars'],r1['people']]
+        #     tab_basic.set_value(i,dir,var)
+        # elif i ==u'烟台':
+        #     r1=analysis_yt(yt)
+        #     var=[r1['sale'],r1['cars'],r1['people']]
+        #     tab_basic.set_value(i,dir,var)
+#u'tab_basic 属于 最终表的部分 结构，主要包含13日销售'
 def create_tab_basic():
     print os.getcwd()
     # print os.path.isabs(os.getcwd())
@@ -552,20 +626,36 @@ def create_tab_basic():
     index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
     cols1 = ls_dir_used
     cols2= ['sale','cars','people']
-
     multi = pa.MultiIndex.from_product([cols1,cols2], names=['first', 'second'])
     tab_basic = pa.DataFrame(index=index,columns=multi)
     tab_basic = tab_basic.fillna(0)
+
+    cols3= [u'服装',u'配饰',u'化妆品',u'家居生活',u'数码电器',u'皮具',u'正餐',u'费正餐',u'休闲娱乐',u'文教娱乐',u'综合服务',u'专项服务',u'销售合计']
+    tab_group = pa.DataFrame(index=index,columns=cols3)
+    tab_group = tab_group.fillna(0)
+    tab_group2 = tab_group.copy()
     '''________________________________'''
-    handle_oneday(tab_basic,'1.1')
-    print tab_basic
+
     # print tab_basic.xs('sale',level='second',axis=1)
+    print tab_group
+    for i in ls_dir_used:
+        handle_oneday(tab_basic,i)
     return  tab_basic,ls_dir_used
+#u'tab_industry 属于 最终表的部分 结构，主要包含13日销售'
+
 
 if __name__ == '__main__':
-    judge_ver()
-    tab_basic,ls_dir_used =create_tab_basic()
-    create_xls(tab_basic,ls_dir_used)
+    # judge_ver()
+    # tab_basic,ls_dir_used =create_tab_basic()
+    # ls1= create_xls(tab_basic,ls_dir_used)
+    # data_to_excel(ls1)
+    # ''''''test
+    index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
+    cols3= [u'服装',u'配饰',u'化妆品',u'家居生活',u'数码电器',u'皮具',u'正餐',u'费正餐',u'休闲娱乐',u'文教娱乐',u'综合服务',u'专项服务',u'销售合计']
+    tab_group = pa.DataFrame(index=index,columns=cols3)
+    tab_group = tab_group.fillna(0)
+    handle_oneday_group(tab_group,'1.1')
+
 
 
 
