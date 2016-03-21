@@ -796,8 +796,8 @@ if __name__ == '__main__':
     judge_ver()
     tab_basic,tab_group,ls_dir_used =create_tab_basic()
     # print tab_group
-    ls1= create_xls(tab_basic,tab_group,ls_dir_used)
-    data_to_excel(ls1)
+    # ls1= create_xls(tab_basic,tab_group,ls_dir_used)
+    # data_to_excel(ls1)
     # ''''''test
     # index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
     # cols3= [u'服装',u'配饰',u'化妆品',u'家居生活',u'数码电器',u'皮具',u'正餐',u'非正餐',u'休闲娱乐',u'文教娱乐',u'综合服务',u'专项服务',u'销售合计']
