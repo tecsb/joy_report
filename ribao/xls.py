@@ -641,9 +641,9 @@ def handle_oneday(tab_basic,dir):
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
                 cy.append(i)
-            elif str(i).find(u'天津')!= -1:
+            elif str(i).find(u'天津')!= -1 or str(i).find(u'大悦城每日销售明细')!= -1:
                 tj.append(i)
-            elif str(i).find(u'西单')!= -1:
+            elif str(i).find(u'西单')!= -1 or str(i).find(u'大悦城商户销售')!= -1 and str(i).find(u'烟台')==-1:
                 xd.append(i)
             elif str(i).find(u'上海')!= -1:
                 sh.append(i)
