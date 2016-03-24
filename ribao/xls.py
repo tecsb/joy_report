@@ -304,9 +304,19 @@ def analysis_sh(ls,tab_group=None,lb_tab_top=None):
         else:
             a1=axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
         if res[res.values ==u'品牌名称'].empty:
-            print res.columns.tolist().index(u'品牌名称')
+            if u'品牌名称' in res.columns.tolist():
+                print res.columns.tolist().index(u'品牌名称')
+            else:
+                if res[res.values ==u'品牌'].empty:
+                    print res.columns.tolist().index(u'品牌')
+                else:
+                    a2=axis(name= u'品牌',x=res[res.values ==u'品牌'].index[0],y=res[res.values ==u'品牌'].columns[0])
         else:
             a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+
+
+
+
         # if res[res.values ==u'天气'].empty:
         #     print res.columns.tolist().index(u'天气')
         # else:
@@ -615,6 +625,7 @@ def create_xls(tab_basic,tab_group,ls_dir_used):
     return [tab0,tab1,tab2,tab3,tab4,tab5,tab6,tab7]
 def handle_oneday(tab_basic,dir):
     ls = os.listdir(os.getcwd()+'/'+dir)
+    print sys.path[0]+str('/')+str(dir)+str('/')+ls[-1]
     cy=[]#u'朝阳'
     tj=[]#u'天津'
     xd=[]#u'西单'
@@ -626,31 +637,31 @@ def handle_oneday(tab_basic,dir):
     if  judge_ver()==u'Windows':
         for i in  ls:
             if str(i).decode('gb2312').find(u'朝阳')!= -1:
-                cy.append(i)
+                cy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'天津')!= -1:
-                tj.append(i)
+                tj.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'西单')!= -1:
-                xd.append(i)
+                xd.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'上海')!= -1:
-                sh.append(i)
+                sh.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'沈阳')!= -1:
-                sy.append(i)
+                sy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'烟台')!= -1:
-                yt.append(i)
+                yt.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
     else:
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
-                cy.append(i)
+                cy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'天津')!= -1 or str(i).find(u'大悦城每日销售明细')!= -1:
-                tj.append(i)
+                tj.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'西单')!= -1 or str(i).find(u'大悦城商户销售')!= -1 and str(i).find(u'烟台')==-1:
-                xd.append(i)
+                xd.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'上海')!= -1:
-                sh.append(i)
+                sh.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'沈阳')!= -1:
-                sy.append(i)
+                sy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'烟台')!= -1:
-                yt.append(i)
+                yt.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
     if len(cy)==0 or len(xd)==0 or len(tj)==0 or len(sh)==0 or len(sy)==0:
         print 'lost file ______ handleoneday()',dir,'\n'
         return
@@ -708,9 +719,9 @@ def handle_oneday_group(tab_group,lb_tab_top,dir):
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
                 cy.append(i)
-            elif str(i).find(u'天津')!= -1:
+            elif str(i).find(u'天津')!= -1 or str(i).find(u'大悦城每日销售明细')!= -1:
                 tj.append(i)
-            elif str(i).find(u'西单')!= -1:
+            elif str(i).find(u'西单')!= -1 or str(i).find(u'大悦城商户销售')!= -1 and str(i).find(u'烟台')==-1:
                 xd.append(i)
             elif str(i).find(u'上海')!= -1:
                 sh.append(i)
