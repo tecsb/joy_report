@@ -298,14 +298,15 @@ def analysis_xd(ls,tab_group=None,lb_tab_top=None):
             tab_group.set_value(u'西单',col=tab_group.columns,value =tab_group.ix[u'西单']+res2 )
             tab_group.set_value(u'西单',u'销售合计',res2.sum())
         if lb_tab_top is not None:
-
             res1 = res1.dropna(subset=[res1.columns[3]])
             res1 = res1.sort_values(by =res1.columns[6],ascending=False)
-            res1 = res1.set_index(res1.columns[2])
-            print res1
-            # res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
+            # res1 = res1.set_index(res1.columns[2])lab_
+            return res1.head(10).ix[::,1:7]
 
-            # tab_top.set_value(u'西单',col=tab_top.columns,value =res1.ix[:10])
+            # res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
+            # lb_tab_top.set_index([u'西单',res1.head(10).ix[::,1:7].columns],inplace = True)
+            # lb_tab_top.set_value(u'西单',col=res1.head(10).ix[::,1:7].columns,value =res1.head(10).ix[::,1:7])
+            # print lb_tab_top.ix[u'西单']
         return  {'sale':sales_total,'cars':today_cars,'people':today_people,'count':sales_count}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
@@ -826,9 +827,9 @@ def handle_oneday_top(tab_top,dir):
     if len(cy)==0 or len(xd)==0 or len(tj)==0 or len(sh)==0 or len(sy)==0 or len(yt)==0 :
         print 'lost file ______ handleoneday_group()',dir,'\n'
         return
-    for i in tab_top.index.levels[0].tolist():
+    for i in tab_top.columns.levels[0].tolist():
         if i ==u'西单':
-            analysis_xd(xd,lb_tab_top=tab_top)
+            xd_tab_top =analysis_xd(xd,lb_tab_top=tab_top)
         elif i ==u'朝阳':
             print 'ok'
             # r1=analysis_cy(cy,tab_group,lb_tab_top)
@@ -888,9 +889,11 @@ def create_tab_basic():
     tab_group2 = tab_group.copy()# u"创建昨日"
     # u'8个项目top10'
     cols_top1 =[u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
-    cols_top2= [u'铺位号',u'品牌',u'面积',u'业态',u'当日销售',u'交易笔数',u'客单价',u'上周同日销售',u'销售增幅',u'日坪效',u'备注']
-    multi = pa.MultiIndex.from_product( [cols_top1,range(1,11)], names=['first', 'second'])
-    tab_top = pa.DataFrame(index =multi,columns=cols_top2)
+    cols_top2 = range(1,8)
+    # cols_top2= [u'铺位号',u'品牌',u'面积',u'业态',u'当日销售',u'交易笔数',u'客单价',u'上周同日销售',u'销售增幅',u'日坪效',u'备注']
+    # multi = pa.MultiIndex.from_product( [cols_top1,range(1,11)], names=['first', 'second'])
+    multi = pa.MultiIndex.from_product( [cols_top1,cols_top2], names=['first', 'second'])
+    tab_top = pa.DataFrame(index =range(1,11),columns=multi)
     tab_top = tab_top.fillna(0)
     # print tab_basic.xs('sale',level='second',axis=1)
     # for i in ls_dir_used:
