@@ -27,8 +27,177 @@ class axis:
             # self.name = ''     # u''
             # self.x = 10     # 尺寸
             # self.y = []     # 列表
-
-
+def analysis_xy(ls,tab_group=None,lb_tab_top=None):
+    print 'xy report'
+    if ls:
+        res = pa.read_excel(ls[-1])
+        a1 = 0
+        a2 = 0
+        a3 = 0
+        if res[res.values ==u'铺位号'].empty:
+            print res.columns.tolist().index(u'铺位号')
+        else:
+            a1=axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+        if res[res.values ==u'品牌名称'].empty:
+            print res.columns.tolist().index(u'品牌名称')
+        else:
+            a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+        # if res[res.values ==u'天气'].empty:
+        #     print res.columns.tolist().index(u'天气')
+        # else:
+        #     a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+        res0 = pa.DataFrame(res.ix[a1.x+1:])
+        if (a1.x==a2.x):
+            res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
+        else:
+            print u'铺位和品牌名称位置不在同一行'
+            return
+        sales_total =0
+        today_cars=0
+        today_people = 0
+        sales_count =0
+        try:
+            for i in res1.ix[::,7].sort_values(ascending=False).dropna():
+                if isinstance(i,(float,int)):
+                    sales_count = i;
+                    break
+                else:
+                    pass
+            print sales_count
+        except:
+            print 'sales_count is not fetched'
+        for i in res1.ix[::,6].sort_values(ascending=False).dropna():
+            if isinstance(i,(float,int)):
+                sales_total = i;
+                break
+            else:
+                pass
+        if a3==0:
+            tp = res.columns.tolist()
+            ls1 = []
+            for i in tp:
+                if isinstance(i,(int,float)):
+                    ls1.append(i)
+        else:
+            print 'weather location errors'
+        if(len(ls1)<2):
+            print 'error:locate people and cars'
+            return
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
+        # print res.where(res.values ==u'铺位号')
+        # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
+        if tab_group is not None:
+            res1 = res1.ix[::,:8].copy()
+            for i in res1.index:
+                if isinstance(res1[res1.columns[5]][i],unicode):
+                    v1 = res1[res1.columns[5]][i].strip()
+                    if v1==u'特卖':
+                        res1.set_value(i,res1.columns[5], u'服装')
+                    elif v1==u'生活':
+                        res1.set_value(i,res1.columns[5], u'家居生活')
+                    elif v1==u'饰品':
+                        res1.set_value(i,res1.columns[5], u'配饰')
+                    elif v1 not in tab_group.columns:
+                        res1.set_value(i,res1.columns[5], u'服装')
+                    else:
+                        res1.set_value(i,res1.columns[5], v1)
+            res2 = res1.ix[:,6].groupby(res1[res1.columns[5]]).sum()#u'group 分析'
+            res2 = res2.fillna(0)
+            tab_group.set_value(u'祥云',col=tab_group.columns,value =tab_group.ix[u'祥云']+res2 )
+            tab_group.set_value(u'祥云',u'销售合计',res2.sum())
+        if lb_tab_top is not None:
+            res1 = res1.dropna(subset=[res1.columns[3]])
+            res1 = res1.sort_values(by =res1.columns[6],ascending=False)
+            res1 = res1.set_index(res1.columns[2])
+            res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
+            return res1.ix[:10]
+        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+    else:
+        print 'no xiangyun file in the directory'
+def analysis_cd(ls,tab_group=None,lb_tab_top=None):
+    print 'cd report'
+    if ls:
+        res = pa.read_excel(ls[-1])
+        a1 = 0
+        a2 = 0
+        a3 = 0
+        if res[res.values ==u'铺位号'].empty:
+            print res.columns.tolist().index(u'铺位号')
+        else:
+            a1=axis(name= u'铺位号',x=res[res.values ==u'铺位号'].index[0],y=res[res.values ==u'铺位号'].columns[0])
+        if res[res.values ==u'品牌名称'].empty:
+            print res.columns.tolist().index(u'品牌名称')
+        else:
+            a2=axis(name= u'品牌名称',x=res[res.values ==u'品牌名称'].index[0],y=res[res.values ==u'品牌名称'].columns[0])
+        # if res[res.values ==u'天气'].empty:
+        #     print res.columns.tolist().index(u'天气')
+        # else:
+        #     a3=axis(name= u'天气',x=res[res.values ==u'天气'].index[0],y=res[res.values ==u'天气'].columns[0])
+        res0 = pa.DataFrame(res.ix[a1.x+1:])
+        if (a1.x==a2.x):
+            res1 = pa.DataFrame(data=res.ix[a1.x+1:].values,index= res.index[a1.x+1:],columns=res.ix[a1.x,::].tolist())
+        else:
+            print u'铺位和品牌名称位置不在同一行'
+            return
+        sales_total =0
+        today_cars=0
+        today_people = 0
+        sales_count =0
+        try:
+            sales_count = res1.ix[::,7].max()
+            print sales_count
+        except:
+            print 'sales_count is not fetched'
+        for i in res1.ix[::,6].sort_values(ascending=False).dropna():
+            if isinstance(i,(float,int)):
+                sales_total = i;
+                break
+            else:
+                pass
+        if a3==0:
+            tp = res.columns.tolist()
+            ls1 = []
+            for i in tp:
+                if isinstance(i,(int,float)):
+                    ls1.append(i)
+        else:
+            print 'weather location errors'
+        if(len(ls1)<2):
+            print 'error:locate people and cars'
+            return
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
+        # print res.where(res.values ==u'铺位号')
+        # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
+        if tab_group is not None:
+            res1 = res1.ix[::,:8].copy()
+            for i in res1.index:
+                if isinstance(res1[res1.columns[5]][i],unicode):
+                    v1 = res1[res1.columns[5]][i].strip()
+                    if v1==u'特卖':
+                        res1.set_value(i,res1.columns[5], u'服装')
+                    elif v1==u'生活':
+                        res1.set_value(i,res1.columns[5], u'家居生活')
+                    elif v1==u'饰品':
+                        res1.set_value(i,res1.columns[5], u'配饰')
+                    elif v1 not in tab_group.columns:
+                        res1.set_value(i,res1.columns[5], u'服装')
+                    else:
+                        res1.set_value(i,res1.columns[5], v1)
+            res2 = res1.ix[:,6].groupby(res1[res1.columns[5]]).sum()#u'group 分析'
+            res2 = res2.fillna(0)
+            tab_group.set_value(u'成都',col=tab_group.columns,value =tab_group.ix[u'成都']+res2 )
+            tab_group.set_value(u'成都',u'销售合计',res2.sum())
+        if lb_tab_top is not None:
+            res1 = res1.dropna(subset=[res1.columns[3]])
+            res1 = res1.sort_values(by =res1.columns[6],ascending=False)
+            res1 = res1.set_index(res1.columns[2])
+            res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
+            return res1.ix[:10]
+        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+    else:
+        print 'no chengdu file in the directory'
 def analysis_tj(ls,tab_group=None,lb_tab_top=None):
     print 'tj report'
     if ls:
@@ -300,9 +469,8 @@ def analysis_xd(ls,tab_group=None,lb_tab_top=None):
         if lb_tab_top is not None:
             res1 = res1.dropna(subset=[res1.columns[3]])
             res1 = res1.sort_values(by =res1.columns[6],ascending=False)
-            # res1 = res1.set_index(res1.columns[2])lab_
+            # res1 = res1.set_index(res1.columns[2])
             return res1.head(10).ix[::,1:7]
-
             # res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             # lb_tab_top.set_index([u'西单',res1.head(10).ix[::,1:7].columns],inplace = True)
             # lb_tab_top.set_value(u'西单',col=res1.head(10).ix[::,1:7].columns,value =res1.head(10).ix[::,1:7])
@@ -685,6 +853,11 @@ def handle_oneday(tab_basic,dir):
                 sy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'烟台')!= -1:
                 yt.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).decode('gb2312').find(u'成都')!= -1:
+                cd.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).decode('gb2312').find(u'祥云')!= -1:
+                xy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+
     else:
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
@@ -699,6 +872,10 @@ def handle_oneday(tab_basic,dir):
                 sy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'烟台')!= -1:
                 yt.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).find(u'成都')!= -1:
+                cd.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).find(u'祥云')!= -1:
+                xy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
     if len(cy)==0 or len(xd)==0 or len(tj)==0 or len(sh)==0 or len(sy)==0:
         print 'lost file ______ handleoneday()',dir,'\n'
         return
@@ -727,6 +904,14 @@ def handle_oneday(tab_basic,dir):
             r1=analysis_yt(yt)
             var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
             tab_basic.set_value(i,dir,var)
+        elif i ==u'成都':
+            r1=analysis_cd(cd)
+            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            tab_basic.set_value(i,dir,var)
+        elif i ==u'祥云':
+            r1=analysis_xy(xy)
+            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            tab_basic.set_value(i,dir,var)
 
 def handle_oneday_group(tab_group,lb_tab_top,dir):
     ls = os.listdir(os.getcwd()+'/'+dir)
@@ -752,6 +937,10 @@ def handle_oneday_group(tab_group,lb_tab_top,dir):
                 sy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).decode('gb2312').find(u'烟台')!= -1:
                 yt.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).decode('gb2312').find(u'成都')!= -1:
+                cd.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).decode('gb2312').find(u'祥云')!= -1:
+                xy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
     else:
         for i in  ls:
             if str(i).find(u'朝阳')!= -1:
@@ -766,6 +955,10 @@ def handle_oneday_group(tab_group,lb_tab_top,dir):
                 sy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
             elif str(i).find(u'烟台')!= -1:
                 yt.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).find(u'成都')!= -1:
+                cd.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
+            elif str(i).find(u'祥云')!= -1:
+                xy.append(sys.path[0]+str('/')+str(dir)+str('/')+i)
     if len(cy)==0 or len(xd)==0 or len(tj)==0 or len(sh)==0 or len(sy)==0 or len(yt)==0 :
         print 'lost file ______ handleoneday_group()',dir,'\n'
         return
@@ -782,6 +975,10 @@ def handle_oneday_group(tab_group,lb_tab_top,dir):
             r1=analysis_tj(tj,tab_group,lb_tab_top)
         elif i ==u'烟台':
             r1=analysis_yt(yt,tab_group,lb_tab_top)
+        elif i ==u'成都':
+            r1=analysis_cd(cd,tab_group,lb_tab_top)
+        elif i ==u'祥云':
+            r1=analysis_xy(xy,tab_group,lb_tab_top)
         #     var=[r1['sale'],r1['cars'],r1['people']]
         #     tab_basic.set_value(i,dir,var)
 #u'tab_basic 属于 最终表的部分 结构，主要包含13日销售'
@@ -896,12 +1093,13 @@ def create_tab_basic():
     tab_top = pa.DataFrame(index =range(1,11),columns=multi)
     tab_top = tab_top.fillna(0)
     # print tab_basic.xs('sale',level='second',axis=1)
-    # for i in ls_dir_used:
-    #     handle_oneday(tab_basic,i)
-    # handle_oneday_group(tab_group,None,ls_dir_used[-1])# add top and industry
-    # handle_oneday_group(tab_group2,None,ls_dir_used[-7])# add top and industry
-    handle_oneday_top(tab_top,ls_dir_used[-1])
-    handle_oneday_top(tab_top,ls_dir_used[-7])
+    for i in ls_dir_used:
+        print i
+        handle_oneday(tab_basic,i)
+    handle_oneday_group(tab_group,None,ls_dir_used[-1])# add top and industry
+    handle_oneday_group(tab_group2,None,ls_dir_used[-7])# add top and industry
+    # handle_oneday_top(tab_top,ls_dir_used[-1])
+    # handle_oneday_top(tab_top,ls_dir_used[-7])
     return  tab_basic,tab_group,tab_group2,ls_dir_used,tab_top
 
 
@@ -911,7 +1109,7 @@ if __name__ == '__main__':
     tab_basic,tab_group,tab_group2,ls_dir_used,tab_top =create_tab_basic()
     # print tab_basic
     ls1= create_xls(tab_basic,tab_group,tab_group2,ls_dir_used,tab_top)
-    # data_to_excel(ls1)
+    data_to_excel(ls1)
     # ''''''test
     # index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
     # cols3= [u'服装',u'配饰',u'化妆品',u'家居生活',u'数码电器',u'皮具',u'正餐',u'非正餐',u'休闲娱乐',u'文教娱乐',u'综合服务',u'专项服务',u'销售合计']
