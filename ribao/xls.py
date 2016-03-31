@@ -83,7 +83,7 @@ def analysis_xy(ls,tab_group=None,lb_tab_top=None):
         if(len(ls1)<2):
             print 'error:locate people and cars'
             return
-        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -112,7 +112,9 @@ def analysis_xy(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':ls1[-2],'people':ls1[-1] if ls1[-1]>100 else ls1[-1]*10000,'sales_count':sales_count}
+
     else:
         print 'no xiangyun file in the directory'
 def analysis_cd(ls,tab_group=None,lb_tab_top=None):
@@ -166,7 +168,7 @@ def analysis_cd(ls,tab_group=None,lb_tab_top=None):
         if(len(ls1)<2):
             print 'error:locate people and cars'
             return
-        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -195,7 +197,9 @@ def analysis_cd(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':ls1[-2],'people':ls1[-1] if ls1[-1]>100 else ls1[-1]*10000,'sales_count':sales_count}
+
     else:
         print 'no chengdu file in the directory'
 def analysis_tj(ls,tab_group=None,lb_tab_top=None):
@@ -267,7 +271,7 @@ def analysis_tj(ls,tab_group=None,lb_tab_top=None):
         if(len(ls1)<2):
             print 'error:locate people and cars'
             return
-        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
         if tab_group is not None:
             res1 = res1.ix[::,:8].copy()
             for i in res1.index:
@@ -293,7 +297,9 @@ def analysis_tj(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':ls1[-2],'people':ls1[-1] if ls1[-1]>100 else ls1[-1]*10000,'sales_count':sales_count}
+
     else:
         print 'no tianjin file in the directory'
 def analysis_cy(ls,tab_group=None,lb_tab_top=None):
@@ -347,7 +353,7 @@ def analysis_cy(ls,tab_group=None,lb_tab_top=None):
         if(len(ls1)<2):
             print 'error:locate people and cars'
             return
-        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -376,7 +382,9 @@ def analysis_cy(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':ls1[-2],'people':ls1[-1] if ls1[-1]>100 else ls1[-1]*10000,'sales_count':sales_count}
+
     else:
         print 'no chaoyang file in the directory'
 def analysis_xd(ls,tab_group=None,lb_tab_top=None):
@@ -446,7 +454,7 @@ def analysis_xd(ls,tab_group=None,lb_tab_top=None):
                     pass
         else:
             print 'weather location errors'
-        print {'sale':sales_total,'cars':today_cars,'people':today_people,'count':sales_count}
+        print {'sale':sales_total,'cars':today_cars,'people':today_people,'sales_count':sales_count}
         if tab_group is not None:
             res1 = res1.ix[::,:8].copy()
             for i in res1.index:
@@ -475,7 +483,9 @@ def analysis_xd(ls,tab_group=None,lb_tab_top=None):
             # lb_tab_top.set_index([u'西单',res1.head(10).ix[::,1:7].columns],inplace = True)
             # lb_tab_top.set_value(u'西单',col=res1.head(10).ix[::,1:7].columns,value =res1.head(10).ix[::,1:7])
             # print lb_tab_top.ix[u'西单']
-        return  {'sale':sales_total,'cars':today_cars,'people':today_people,'count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':today_cars,'people':today_people if today_people>100 else today_people*10000,'sales_count':sales_count}
+
+        # return  {'sale':sales_total,'cars':today_cars,'people':today_people,'sales_count':sales_count}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -538,7 +548,7 @@ def analysis_sh(ls,tab_group=None,lb_tab_top=None):
         if(len(ls1)<2):
             print 'error:locate people and cars'
             return
-        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
         if tab_group is not None:
             res1 = res1.ix[::,:9].copy()
             for i in res1.index:
@@ -564,7 +574,9 @@ def analysis_sh(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6],res1.columns[7]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':ls1[-2],'people':ls1[-1] if ls1[-1]>100 else ls1[-1]*10000,'sales_count':sales_count}
+
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -640,7 +652,7 @@ def analysis_sy(ls,tab_group=None,lb_tab_top=None):
                     pass
         else:
             print 'weather location errors'
-        print {'sale':sales_total,'cars':today_cars,'people':today_people,'count':sales_count}
+        print {'sale':sales_total,'cars':today_cars,'people':today_people,'sales_count':sales_count}
         if tab_group is not None:
             res1 = res1.ix[::,:8].copy()
             for i in res1.index:
@@ -666,7 +678,9 @@ def analysis_sy(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':today_cars,'people':today_people,'count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':today_cars,'people':today_people if today_people>100 else today_people*10000,'sales_count':sales_count}
+
+        # return {'sale':sales_total,'cars':today_cars,'people':today_people,'sales_count':sales_count}
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -723,7 +737,7 @@ def analysis_yt(ls,tab_group=None,lb_tab_top=None):
         if(len(ls1)<2):
             print 'error:locate people and cars'
             return
-        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        print {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
         if tab_group is not None:
             res1 = res1.ix[::,:8].copy()
             for i in res1.index:
@@ -749,7 +763,9 @@ def analysis_yt(ls,tab_group=None,lb_tab_top=None):
             res1 = res1.set_index(res1.columns[2])
             res1= res1.reindex(columns=[res1.columns[2],res1.columns[3],res1.columns[4],res1.columns[5],res1.columns[6]])
             return res1.ix[:10]
-        return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'count':sales_count}
+        # return {'sale':sales_total,'cars':ls1[-2],'people':ls1[-1],'sales_count':sales_count}
+        return {'sale':sales_total if sales_total>10000 else sales_total*10000,'cars':ls1[-2],'people':ls1[-1] if ls1[-1]>100 else ls1[-1]*10000,'sales_count':sales_count}
+
         # a4 = axis(name = u'本日总销售',x= res[res.values ==u'本日总销售'].index[0],y= res[res.values ==u'本日总销售'].columns[0])
         # print res.where(res.values ==u'铺位号')
         # print a1.name,a1.x,a1.y,'\n',a2.name,a2.x,a2.y
@@ -787,24 +803,29 @@ def create_xls(tab_basic,tab_group,tab_group2,ls_dir_used,tab_top):
     tab0.set_value(index = tab_basic.index,col=(u'客流量(万人)',u'上周同日'),value=tab_basic[ls_dir_used[-7]].people)
     tab0.set_value(index = tab_basic.index,col=(u'车流量(车次)',u'当日车流'),value=tab_basic[ls_dir_used[-1]].cars)
     tab0.set_value(index = tab_basic.index,col=(u'车流量(车次)',u'上周同日'),value=tab_basic[ls_dir_used[-7]].cars)
+    tab0.set_value(index=u'各项目合计',col=tab0.columns,value=tab0.sum(axis=0))
     tab0= tab0.fillna(0)
     tab1 = pa.DataFrame(index = index1,columns=[u'昨日销售',u'今日销售',u'增幅'])
     # print '************','\n',tab_basic.ix[:,ls_dir_used[-1]]['sale']
     tab1.set_value(index=tab1.index,col=u'今日销售',value=tab_basic[ls_dir_used[-1]].sale)
     tab1.set_value(index=tab1.index,col=u'昨日销售',value=tab_basic[ls_dir_used[-2]].sale)
     tab1 = tab1.fillna(0)
+    tab1.set_value(index=u'各项目合计',col=tab1.columns,value=tab1.sum(axis=0))
 
     tab2 = pa.DataFrame(index = index1,columns=[u'昨日客流',u'今日客流',u'增幅'])
     tab2.set_value(index=tab2.index,col=u'今日客流',value=tab_basic[ls_dir_used[-1]].people)
     tab2.set_value(index=tab2.index,col=u'昨日客流',value=tab_basic[ls_dir_used[-2]].people)
     tab2 = tab2.fillna(0)
+    tab2.set_value(index=u'各项目合计',col=tab2.columns,value=tab2.sum(axis=0))
 
     # u'13日各项目销售额'
     tab3 = pa.DataFrame(data=tab_basic.xs('sale',level='second',axis=1),index = index1,columns=ls_dir_used)
     tab3 = tab3.fillna(0)
+    tab3.set_value(index=u'各项目合计',col=tab3.columns,value=tab3.sum(axis=0))
     # u'13日各项目客流'
     tab4 = pa.DataFrame(data=tab_basic.xs('people',level='second',axis=1),index = index1,columns=ls_dir_used)
     tab4 = tab4.fillna(0)
+    tab4.set_value(index=u'各项目合计',col=tab4.columns,value=tab4.sum(axis=0))
 
     #u'项目客群指标列表'
     ls3 = [u'提袋率',u'提袋率',u'提袋率',u'客单价',u'客单价',u'客单价',u'车/客流占比',u'车/客流占比',u'车/客流占比',u'车位转换率',u'车位转换率',u'车位转换率']
@@ -813,16 +834,31 @@ def create_xls(tab_basic,tab_group,tab_group2,ls_dir_used,tab_top):
     index5 = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都',u'平均']
     tab5 = pa.DataFrame(index= index5,columns= multi5)
     tab5 = tab5.fillna(0)
+    try:
+        tab5.set_value(index=tab_basic.index,col=(u'提袋率',u'上周同日'),value=tab_basic[ls_dir_used[-7]].sales_count/tab_basic[ls_dir_used[-7]].people)
+        tab5.set_value(index=tab_basic.index,col=(u'提袋率',u'当日'),value=tab_basic[ls_dir_used[-1]].sales_count/tab_basic[ls_dir_used[-1]].people)
+        tab5.set_value(index=tab_basic.index,col=(u'客单价',u'上周同日'),value=tab_basic[ls_dir_used[-7]].sale/tab_basic[ls_dir_used[-7]].sales_count)
+        tab5.set_value(index=tab_basic.index,col=(u'客单价',u'当日'),value=tab_basic[ls_dir_used[-1]].sale/tab_basic[ls_dir_used[-1]].sales_count)
+        tab5.set_value(index=tab_basic.index,col=(u'车/客流占比',u'车流量'),value=tab_basic[ls_dir_used[-1]].cars)
+        tab5.set_value(index=tab_basic.index,col=(u'车/客流占比',u'客流量'),value=tab_basic[ls_dir_used[-1]].people)
+        tab5.set_value(index=tab_basic.index,col=(u'车位转换率',u'车流量'),value=tab_basic[ls_dir_used[-1]].cars)
+        tab5.set_value(index=u'平均',col=tab5.columns,value=tab5[:-1].mean(axis=0))
+    except:
+        print 'expect'
     # u'各项目分业态销售状况(万元)'
     cols = [u'服装',u'配饰',u'化妆品',u'家居生活',u'数码电器',u'皮具',u'正餐',u'非正餐',u'休闲娱乐',u'文教娱乐',u'综合服务',u'专项服务',u'销售合计']
     tab6 = pa.DataFrame(index = index1+[u'业态占比',u'上周同日总计',u'环比增幅'],columns=cols)
     tab6 = tab6.fillna(0)
     tab6.set_value(index=tab_group.index,col= tab_group.columns,value = tab_group.values)
+    tab6.set_value(index =u'各项目合计',col=tab6.columns,value=tab6[:8].sum(axis=0))
+    tab6.set_value(index = u'业态占比',col=tab6.columns,value=tab6.ix[u'各项目合计']/tab6.ix[u'各项目合计',u'销售合计'])
     # u'上周同日各项目分业态销售状况(万元)'
     tab7 = pa.DataFrame(index = index1,columns=cols)
     tab7 = tab7.fillna(0)
     tab7.set_value(index=tab_group2.index,col= tab_group2.columns,value = tab_group2.values)
     # print tab0,'\r',tab1,'\r',tab2,'\r',tab3,'\r',tab4,'\r',tab5,'\r',tab6,'\r',tab7
+    tab6.set_value(index = u'上周同日总计',col=tab6.columns,value=tab7.sum(axis=0))
+    tab6.set_value(index = u'环比增幅',col=tab6.columns,value=tab6.ix[u'各项目合计']/tab6.ix[u'上周同日总计']-1)
     # u'top 10 各项目'
     # tab2 = pa.DataFrame(index = range(1,11),columns=[u'铺位号',u'品牌',u'面积',u'业态',u'当日销售',u'交易笔数',u'客单价',u'上周同日销售',u'销售增幅',u'日坪效',u'备注'])
     # tab2 = tab2.fillna(0)
@@ -882,37 +918,36 @@ def handle_oneday(tab_basic,dir):
     for i in tab_basic.index.values:
         if i ==u'西单':
             r1=analysis_xd(xd)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'朝阳':
             r1=analysis_cy(cy)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'沈阳':
             r1=analysis_sy(sy)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'上海':
             r1=analysis_sh(sh)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'天津':
             r1=analysis_tj(tj)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'烟台':
             r1=analysis_yt(yt)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'成都':
             r1=analysis_cd(cd)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
         elif i ==u'祥云':
             r1=analysis_xy(xy)
-            var=[r1['sale'],r1['cars'],r1['people'],r1['count']]
+            var=[r1['sale'],r1['cars'],r1['people'],r1['sales_count']]
             tab_basic.set_value(i,dir,var)
-
 def handle_oneday_group(tab_group,lb_tab_top,dir):
     ls = os.listdir(os.getcwd()+'/'+dir)
     cy=[]#u'朝阳'
@@ -1042,7 +1077,6 @@ def handle_oneday_top(tab_top,dir):
         elif i ==u'烟台':
             print 'ok'
             # r1=analysis_yt(yt,tab_group,lb_tab_top)
-
 def create_tab_basic():
     print os.getcwd()
     # print os.path.isabs(os.getcwd())
@@ -1075,7 +1109,7 @@ def create_tab_basic():
         print u'取值超出索引序列，文件夹数量不足'
     index = [u'西单',u'朝阳',u'沈阳',u'上海',u'天津',u'烟台',u'祥云',u'成都']
     cols1 = ls_dir_used
-    cols2= ['sale','cars','people','count']
+    cols2= ['sale','cars','people','sales_count']
     multi = pa.MultiIndex.from_product([cols1,cols2], names=['first', 'second'])
     tab_basic = pa.DataFrame(index=index,columns=multi)
     tab_basic = tab_basic.fillna(0)
@@ -1096,18 +1130,25 @@ def create_tab_basic():
     for i in ls_dir_used:
         print i
         handle_oneday(tab_basic,i)
+
+    # handle_oneday(tab_basic,ls_dir_used[-1])
+    # handle_oneday(tab_basic,ls_dir_used[-7])
     handle_oneday_group(tab_group,None,ls_dir_used[-1])# add top and industry
     handle_oneday_group(tab_group2,None,ls_dir_used[-7])# add top and industry
     # handle_oneday_top(tab_top,ls_dir_used[-1])
     # handle_oneday_top(tab_top,ls_dir_used[-7])
-    return  tab_basic,tab_group,tab_group2,ls_dir_used,tab_top
-
-
-
+    # print tab_basic.sortlevel(axis=1).loc[[u'西单',u'天津'],(slice(None),['people'])]
+    # print tab_basic.sortlevel(axis=1).loc[[u'西单',u'天津'],(slice(None),['people'])].columns
+    # print tab_basic.sortlevel(axis=1).loc[[u'西单',u'天津'],(slice(None),['people'])].index
+    # tab_tmp1= tab_basic.sortlevel(axis=1).loc[[u'西单',u'天津'],(slice(None),['people'])]
+    # tab_basic.set_value(index=tab_tmp1.index,col=tab_tmp1.columns,value=tab_tmp1*10000)
+    tab_tmp2 = tab_basic.sortlevel(axis=1).loc[::,(slice(None),['sale','people'])]
+    tab_basic.set_value(index=tab_basic.index,col=tab_tmp2.columns,value=tab_tmp2/10000)
+    print tab_basic
+    return tab_basic,tab_group,tab_group2,ls_dir_used,tab_top
 if __name__ == '__main__':
     judge_ver()
     tab_basic,tab_group,tab_group2,ls_dir_used,tab_top =create_tab_basic()
-    # print tab_basic
     ls1= create_xls(tab_basic,tab_group,tab_group2,ls_dir_used,tab_top)
     data_to_excel(ls1)
     # ''''''test
@@ -1115,5 +1156,5 @@ if __name__ == '__main__':
     # cols3= [u'服装',u'配饰',u'化妆品',u'家居生活',u'数码电器',u'皮具',u'正餐',u'非正餐',u'休闲娱乐',u'文教娱乐',u'综合服务',u'专项服务',u'销售合计']
     # tab_group = pa.DataFrame(index=index,columns=cols3)
     # tab_group = tab_group.fillna(0)
-    # handle_oneday_group(tab_group,True,'1.1')
-    # print tab_group
+    # # handle_oneday_group(tab_group,True,'1.1')
+    # print tab_group.ix[u'西单',u'服装']
